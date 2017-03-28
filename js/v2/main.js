@@ -1,3 +1,15 @@
+window.requestAnimFrame = (function () {
+    return window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        window.oRequestAnimationFrame ||
+        window.msRequestAnimationFrame ||
+        function (/* function FrameRequestCallback */ callback, /* DOMElement Element */ element) {
+            window.setTimeout(callback, 1000 / 60);
+        };
+})();
+
+
 let gl;
 
 let shaderProgram;
@@ -88,12 +100,13 @@ function setMatrixUniforms() {
 function renderSquares() {
 
     let square = null;
-    for (let i=0, len=squares.length; i<len; i++) {
+    for (let i = 0, len = squares.length; i < len; i++) {
 
         square = squares[i];
 
         mat4.identity(mvMatrix);
         mat4.translate(mvMatrix, mvMatrix, vec3.fromValues(square.x, square.y, square.z));
+        mat4.rotate(mvMatrix, mvMatrix, degToRad(angle), vec3.fromValues(0, 1, 0));
 
         gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexPositionBuffer);
         gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, squareVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
@@ -106,6 +119,10 @@ function renderSquares() {
     }
 }
 
+let angle = 0;
+function animateSquares() {
+    angle += 0.5;
+}
 
 function initSquares() {
     //Let's define only 1 buffer th at will be used to render several squares.
@@ -125,12 +142,14 @@ function initSquares() {
  * Main rendering loop
  */
 function render() {
+    requestAnimFrame(render);
+
     gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
     mat4.perspective(pMatrix, 45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0);
 
     renderSquares();
+    animateSquares();
 }
 
 /**
