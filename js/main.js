@@ -114,7 +114,19 @@ function _getShader(gl, id) {
  * Initialize mesh with vertex buffer objects
  */
 function initBuffers() {
+    squareVerticesBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, squareVerticesBuffer);
 
+    const vertices = [
+        1.0, 1.0, 0.0,
+        -1.0, 1.0, 0.0,
+        1.0, -1.0, 0.0,
+        -1.0, -1.0, 0.0
+    ];
+
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+    squareVerticesBuffer.itemSize = 3;
+    squareVerticesBuffer.numItems = 4;
 }
 
 /**
