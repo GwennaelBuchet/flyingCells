@@ -1,6 +1,3 @@
-
-
-
 let gl;
 
 let shaderProgram;
@@ -8,6 +5,7 @@ let mvMatrix = mat4.create();
 let pMatrix = mat4.create();
 
 let squares = [];
+let _NB_SQUARES = 100;
 //buffers
 let squareVertexPositionBuffer = null;
 let squareVertexColorBuffer = null;
@@ -92,7 +90,6 @@ function renderSquares() {
 
         mat4.identity(mvMatrix);
         mat4.translate(mvMatrix, mvMatrix, vec3.fromValues(square.x, square.y, square.z));
-        mat4.rotate(mvMatrix, mvMatrix, degToRad(angle), vec3.fromValues(0, 1, 0));
 
         gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexPositionBuffer);
         gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, squareVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
@@ -107,9 +104,10 @@ function renderSquares() {
     }
 }
 
-let angle = 0;
 function animateSquares() {
-    angle += 0.5;
+    for (let i = 0; i < _NB_SQUARES; i++) {
+        squares[i].animate();
+    }
 }
 
 function initSquares() {
@@ -119,11 +117,9 @@ function initSquares() {
     squareVertexPositionBuffer = buffers[0];
     squareVertexColorBuffer = buffers[1];
 
-    squares = [
-        new Square(0, 0, -10),
-        new Square(-3, -3, -10),
-        new Square(3, 3, -15)
-    ];
+    for (let i = 0; i < _NB_SQUARES; i++) {
+        squares.push(new Square());
+    }
 }
 
 /**

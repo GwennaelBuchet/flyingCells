@@ -4,10 +4,24 @@
 
 class Square {
 
-    constructor(x, y, z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+    constructor() {
+        this.invalidate();
+    }
+
+    invalidate() {
+        this.x = -10 + Math.random() * 2;
+        this.y = -5 + (Math.random() * 10);
+        this.z = -12 + (Math.random() * 2);
+
+        this.speed = 0.1 + Math.random();
+    }
+
+    animate() {
+        this.x += this.speed;
+
+        if (this.x > 10) {
+            this.invalidate();
+        }
     }
 
     static createBuffers() {
