@@ -25,12 +25,13 @@ class Square {
     }
 
     static createBuffers() {
+        let w = 1.6;
         let positionBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
         let vertices = [
-            1, 1, 0,
-            0, 1, 0,
-            1, 0, 0,
+            w, w, 0,
+            0, w, 0,
+            w, 0, 0,
             0, 0, 0
         ];
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
