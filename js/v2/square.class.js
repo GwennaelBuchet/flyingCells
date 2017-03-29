@@ -9,11 +9,11 @@ class Square {
     }
 
     invalidate() {
-        this.x = -10 + Math.random() * 2;
-        this.y = -5 + (Math.random() * 10);
-        this.z = -12 + (Math.random() * 2);
+        this.x = -20 + Math.random() * 10;
+        this.y = -7 + (Math.random() * 14);
+        this.z = -15 + (Math.random() * 7);
 
-        this.speed = 0.1 + Math.random();
+        this.speed = 0.05 + Math.random() / 10;
     }
 
     animate() {
