@@ -5,12 +5,15 @@ let mvMatrix = mat4.create();
 let pMatrix = mat4.create();
 
 let squares = [];
-let _NB_SQUARES = 100;
+let _NB_SQUARES = 200;
+let deltaZ = 0.5;
 //buffers
 let squareVertexPositionBuffer = null;
 let squareVertexColorBuffer = null;
-let squareVertexTextureCoordBuffer = null;
 let texture = null;
+
+let isAnimated = true;
+let renderingModes = null;
 
 function initGL(canvas) {
     try {
@@ -101,7 +104,7 @@ function initTexture() {
         handleLoadedTexture(texture)
     };
 
-    texture.image.src = "img/negx.jpg";
+    texture.image.src = "img/zenika_1.jpg";
 }
 
 function renderSquares() {
@@ -118,8 +121,8 @@ function renderSquares() {
         gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexPositionBuffer);
         gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, squareVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexTextureCoordBuffer);
-        gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, squareVertexTextureCoordBuffer.itemSize, gl.FLOAT, false, 0, 0);
+        gl.bindBuffer(gl.ARRAY_BUFFER, square.textureCoordBuffer);
+        gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, square.textureCoordBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
         gl.activeTexture(gl.TEXTURE0);
         gl.bindTexture(gl.TEXTURE_2D, texture);
@@ -128,13 +131,13 @@ function renderSquares() {
         gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, pMatrix);
         gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
 
-        gl.drawArrays(gl.TRIANGLE_STRIP, 0, squareVertexPositionBuffer.numItems);
+        gl.drawArrays(renderingModes, 0, squareVertexPositionBuffer.numItems);
     }
 }
 
 function animateSquares() {
     for (let i = 0; i < _NB_SQUARES; i++) {
-        squares[i].animate();
+        squares[i].animate(deltaZ);
     }
 }
 
@@ -144,7 +147,6 @@ function initSquares() {
     let buffers = Square.createBuffers();
     squareVertexPositionBuffer = buffers[0];
     squareVertexColorBuffer = buffers[1];
-    squareVertexTextureCoordBuffer = buffers[2];
 
     for (let i = 0; i < _NB_SQUARES; i++) {
         squares.push(new Square());
@@ -162,7 +164,46 @@ function render() {
     mat4.perspective(pMatrix, 45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0);
 
     renderSquares();
-    animateSquares();
+
+    if (isAnimated) {
+        animateSquares();
+    }
+}
+
+function initKeyboard() {
+    window.addEventListener("keydown", function (event) {
+        if (event.defaultPrevented) {
+            return; // Do nothing if the event was already processed
+        }
+
+        switch (event.key) {
+            case " " :
+                isAnimated = !isAnimated;
+                break;
+            case "w" :
+                renderingModes = gl.LINES;
+                break;
+            case "t" :
+                renderingModes = gl.TRIANGLE_STRIP;
+                break;
+            case "-":
+            case "ArrowDown":
+            case "ArrowLeft":
+                deltaZ = Math.max(0, deltaZ - 0.1);
+                break;
+            case "ArrowUp":
+            case "+":
+            case "ArrowRight":
+                deltaZ = Math.min(1.5, deltaZ + 0.1);
+                break;
+            default:
+                return; // Quit when this doesn't handle the key event.
+        }
+
+        console.log("deltaZ = " + deltaZ);
+
+        event.preventDefault();
+    }, true);
 }
 
 /**
@@ -171,8 +212,11 @@ function render() {
 function main() {
     const canvas = document.getElementById("scene");
 
+    initKeyboard();
+
     initGL(canvas);
     initShaders();
+    renderingModes = gl.TRIANGLE_STRIP;
 
     initTexture();
     initSquares();
