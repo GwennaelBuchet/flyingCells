@@ -1,7 +1,7 @@
 /**
  * Created by gwennael.buchet on 28/03/17.
  */
-const squareWidth = 1.6;
+const squareWidth = 0.6;
 const screenWidth = 16;
 const screenHeight = 12;
 const halfScreenWidth = screenWidth / 2.0;
@@ -15,11 +15,11 @@ class Square {
     constructor(index, deltaZ) {
 
         //compute position of this swuare on the "wall of square", which is a matrix
-        let row = Math.floor(index / nbColumns);
-        let column = index - (row * nbColumns);
+        this.row = Math.floor(index / nbColumns);
+        this.column = index - (this.row * nbColumns);
 
-        this.x = -halfScreenWidth + (column * squareWidth + 0.2);
-        this.y = -halfScreenHeight + (row * squareWidth + 0.2);
+        this.x = -halfScreenWidth + (this.column * squareWidth + 0.2);
+        this.y = -halfScreenHeight + (this.row * squareWidth + 0.2);
         this.z = -8 + (Math.random() * deltaZ);
 
         //compute tex coords
@@ -56,11 +56,16 @@ class Square {
         this.speed = 0.005 + Math.random() / 100;
         this.alpha = 0.0;
         this.tmpAlpha = 0.0;
+
+        //this.tmpJump = 0;
     }
 
     animate(deltaZ) {
         this.tmpAlpha += this.speed;
         this.alpha = Math.sin(this.tmpAlpha);
+
+        //this.tmpJump += 0.001;
+        //this.z = -8 + (Math.sin((this.row * Math.PI / nbRows) * this.tmpJump) / 10.0);
 
         if (this.tmpAlpha > Math.PI) {
             this.invalidate(deltaZ);
