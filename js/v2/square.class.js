@@ -25,19 +25,19 @@ class Square {
 
     invalidate(deltaZ) {
         //set a random new position to the left out of the screen
-        this.x = -40 + Math.random() * 17;
+        this.x = -25 + Math.random() * 17;
         this.y = -3 + (Math.random() * 6);
         this.z = -8 + (Math.random() * deltaZ);
 
         //new animation speed
-        this.speed = 0.05 + Math.random() / 10;
+        this.speed = 0.01 + Math.random() / 8;
 
     }
 
     animate(deltaZ) {
         this.x += this.speed;
 
-        if (this.x > 13) {
+        if (this.x > 10) {
             this.invalidate(deltaZ);
         }
 
