@@ -83,11 +83,6 @@ function initShaders() {
     shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
 }
 
-function setMatrixUniforms() {
-    gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, pMatrix);
-    gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
-}
-
 function renderSquares() {
 
     let square = null;
@@ -105,7 +100,9 @@ function renderSquares() {
         gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexColorBuffer);
         gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, squareVertexColorBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
-        setMatrixUniforms();
+        gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, pMatrix);
+        gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
+
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, squareVertexPositionBuffer.numItems);
     }
 }
