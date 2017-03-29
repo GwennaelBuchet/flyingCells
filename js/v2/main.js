@@ -5,8 +5,8 @@ let mvMatrix = mat4.create();
 let pMatrix = mat4.create();
 
 let squares = [];
-let _NB_SQUARES = 200;
-let deltaZ = 0.5;
+let _NB_SQUARES = 300;
+let deltaZ = 0.4;
 //buffers
 let squareVertexPositionBuffer = null;
 let squareVertexColorBuffer = null;
@@ -14,6 +14,7 @@ let texture = null;
 
 let isAnimated = true;
 let renderingModes = null;
+let backgroundColor = 0.0;
 
 function initGL(canvas) {
     try {
@@ -159,6 +160,8 @@ function initSquares() {
 function render() {
     requestAnimFrame(render);
 
+    gl.clearColor(backgroundColor, backgroundColor, backgroundColor, 1.0);
+
     gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     mat4.perspective(pMatrix, 45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0);
@@ -166,6 +169,10 @@ function render() {
     renderSquares();
 
     if (isAnimated) {
+
+        if (backgroundColor < 1.0)
+            backgroundColor += 0.005;
+
         animateSquares();
     }
 }
