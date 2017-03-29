@@ -5,7 +5,7 @@ let mvMatrix = mat4.create();
 let pMatrix = mat4.create();
 
 let squares = [];
-let _NB_SQUARES = 300;
+let _NB_SQUARES = 100;
 let deltaZ = 0.4;
 //buffers
 let squareVertexPositionBuffer = null;
@@ -105,7 +105,7 @@ function initTexture() {
         handleLoadedTexture(texture)
     };
 
-    texture.image.src = "img/zenika_1.jpg";
+    texture.image.src = "../img/zenika_1.jpg";
 }
 
 function renderSquares() {
@@ -150,7 +150,7 @@ function initSquares() {
     squareVertexColorBuffer = buffers[1];
 
     for (let i = 0; i < _NB_SQUARES; i++) {
-        squares.push(new Square());
+        squares.push(new Square(deltaZ));
     }
 }
 

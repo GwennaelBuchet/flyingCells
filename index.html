@@ -4,46 +4,10 @@
     <meta charset="UTF-8">
     <title>Flying cells</title>
 </head>
-<body onload="main();">
+<body>
 
+<input type="button" value="V1" onclick="location.replace('v1/index.html')" />
 
-<canvas id="scene" width="800" height="600">
-    Your browser does not support Canvas <code>&lt;canvas&gt;</code>.
-</canvas>
+<input type="button" value="V2" onclick="location.replace('v2/index.html')" />
 
-
-<script id="vs-simple" type="x-shader/x-vertex">
-    attribute vec3 aVertexPosition;
-    attribute vec2 aTextureCoord;
-
-    uniform mat4 uMVMatrix;
-    uniform mat4 uPMatrix;
-
-    varying vec2 vTextureCoord;
-
-    void main(void) {
-        gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
-        vTextureCoord = aTextureCoord;
-    }
-
-
-</script>
-
-<script id="fs-monochrome" type="x-shader/x-fragment">
-    precision mediump float;
-
-    varying vec2 vTextureCoord;
-
-    uniform sampler2D uSampler;
-
-    void main(void) {
-        gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
-    }
-
-</script>
-
-<script type="text/javascript" src="js/gl-matrix-min.js"></script>
-<script type="text/javascript" src="js/v2/utils.js"></script>
-<script type="text/javascript" src="js/v2/square.class.js"></script>
-<script type="text/javascript" src="js/v2/main.js"></script>
 </body>

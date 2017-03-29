@@ -5,7 +5,7 @@ const squareWidth = 1.6;
 
 class Square {
 
-    constructor() {
+    constructor(deltaZ) {
         //compute new tex coords
         this.textureCoords = [
             0.0, 0.0,
@@ -20,7 +20,7 @@ class Square {
         gl.bindBuffer(gl.ARRAY_BUFFER, this.textureCoordBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.textureCoords), gl.STATIC_DRAW);
 
-        this.invalidate();
+        this.invalidate(deltaZ);
     }
 
     invalidate(deltaZ) {
