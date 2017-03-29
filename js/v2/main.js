@@ -9,6 +9,8 @@ let _NB_SQUARES = 100;
 //buffers
 let squareVertexPositionBuffer = null;
 let squareVertexColorBuffer = null;
+let squareVertexTextureCoordBuffer = null;
+let texture = null;
 
 function initGL(canvas) {
     try {
@@ -81,6 +83,24 @@ function initShaders() {
     shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
 }
 
+function initTexture() {
+    texture = gl.createTexture();
+    texture.image = new Image();
+    texture.image.onload = function() {
+        handleLoadedTexture(texture)
+    };
+
+    texture.image.src = "img/negx.jpg";
+}
+function handleLoadedTexture(texture) {
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.bindTexture(gl.TEXTURE_2D, null);
+}
+
 function renderSquares() {
 
     let square = null;
@@ -116,6 +136,7 @@ function initSquares() {
     let buffers = Square.createBuffers();
     squareVertexPositionBuffer = buffers[0];
     squareVertexColorBuffer = buffers[1];
+    squareVertexTextureCoordBuffer = buffers[2];
 
     for (let i = 0; i < _NB_SQUARES; i++) {
         squares.push(new Square());
@@ -145,6 +166,7 @@ function main() {
     initGL(canvas);
     initShaders();
 
+    initTexture();
     initSquares();
 
     if (gl) {
