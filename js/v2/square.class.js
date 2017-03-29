@@ -9,8 +9,8 @@ class Square {
     }
 
     invalidate() {
-        this.x = -20 + Math.random() * 10;
-        this.y = -7 + (Math.random() * 14);
+        this.x = -40 + Math.random() * 17;
+        this.y = -5 + (Math.random() * 10);
         this.z = -15 + (Math.random() * 7);
 
         this.speed = 0.05 + Math.random() / 10;
@@ -19,20 +19,20 @@ class Square {
     animate() {
         this.x += this.speed;
 
-        if (this.x > 10) {
+        if (this.x > 13) {
             this.invalidate();
         }
     }
 
     static createBuffers() {
-        let w = 1.6;
+        let hw = 0.8;
         let positionBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
         let vertices = [
-            w, w, 0,
-            0, w, 0,
-            w, 0, 0,
-            0, 0, 0
+            hw,  hw,  0.0,
+            -hw, hw,  0.0,
+            hw,  -hw, 0.0,
+            -hw, -hw, 0.0
         ];
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
         positionBuffer.itemSize = 3;
