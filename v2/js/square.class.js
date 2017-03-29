@@ -53,7 +53,7 @@ class Square {
         this.z = -8 + (Math.random() * deltaZ);
 
         //new animation speed
-        this.speed = 0.005 + Math.random() / 20;
+        this.speed = 0.005 + Math.random() / 100;
         this.alpha = 0.0;
         this.tmpAlpha = 0.0;
     }
