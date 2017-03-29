@@ -53,7 +53,7 @@ class Square {
         this.z = -8 + (Math.random() * deltaZ);
 
         //new animation speed
-        this.speed = 0.001 + Math.random() / 100;
+        this.speed = 0.005 + Math.random() / 20;
         this.alpha = 0.0;
         this.tmpAlpha = 0.0;
     }
@@ -62,7 +62,7 @@ class Square {
         this.tmpAlpha += this.speed;
         this.alpha = Math.sin(this.tmpAlpha);
 
-        if (this.tmpAlpha > 360) {
+        if (this.tmpAlpha > Math.PI) {
             this.invalidate(deltaZ);
         }
     }
