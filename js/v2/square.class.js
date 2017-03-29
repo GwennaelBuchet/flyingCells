@@ -52,9 +52,8 @@ class Square {
         colorBuffer.numItems = 4;
 
         let textureCoordBuffer = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexTextureCoordBuffer);
+        gl.bindBuffer(gl.ARRAY_BUFFER, textureCoordBuffer);
         let textureCoords = [
-            // Front face
             0.0, 0.0,
             1.0, 0.0,
             1.0, 1.0,
@@ -62,7 +61,7 @@ class Square {
         ];
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoords), gl.STATIC_DRAW);
         textureCoordBuffer.itemSize = 2;
-        textureCoordBuffer.numItems = 24;
+        textureCoordBuffer.numItems = 4;
 
         return [positionBuffer, colorBuffer, textureCoordBuffer];
     }
