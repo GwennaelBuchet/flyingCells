@@ -1,4 +1,6 @@
 let gl;
+let canvas;
+let canvasDimension = {};
 
 let shaderProgram;
 let mvMatrix = mat4.create();
@@ -16,11 +18,14 @@ let isAnimated = true;
 let renderingModes = null;
 let backgroundColor = 0.0;
 
-function initGL(canvas) {
+function initGL(canvasElt) {
     try {
-        gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
-        gl.viewportWidth = canvas.width;
-        gl.viewportHeight = canvas.height;
+        gl = canvasElt.getContext("webgl") || canvasElt.getContext("experimental-webgl");
+        gl.viewportWidth = canvasElt.width;
+        gl.viewportHeight = canvasElt.height;
+        canvasDimension.w = canvasElt.width;
+        canvasDimension.h = canvasElt.height;
+        canvas = canvasElt;
     } catch (e) {
     }
     if (!gl) {
@@ -192,6 +197,9 @@ function initKeyboard() {
                 break;
             case "t" :
                 renderingModes = gl.TRIANGLE_STRIP;
+                break;
+            case "f":
+                toggleFullscreen(canvas, gl, canvasDimension);
                 break;
             case "-":
             case "ArrowDown":
