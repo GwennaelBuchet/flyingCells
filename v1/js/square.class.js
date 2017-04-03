@@ -51,16 +51,19 @@ class Square {
         let texHeight = squareWidth / screenHeight;
         let texX = (this.x + halfScreenWidth) / screenWidth;
         let texY = 1.0 - ((this.y + halfScreenHeight) / screenHeight);
-        this.textureCoords = [
-            texX + texWidth, texY,
-            texX, texY,
-            texX + texWidth, texY + texHeight,
-            texX, texY + texHeight
-            /*1.0, 0.0,
-             0.0, 0.0,
-             1.0, 1.0,
-             0.0, 1.0*/
-        ];
+
+        //if (texX + texWidth < 1.0) {
+            this.textureCoords = [
+                texX + texWidth, texY,
+                texX, texY,
+                texX + texWidth, texY + texHeight,
+                texX, texY + texHeight
+                /*1.0, 0.0,
+                 0.0, 0.0,
+                 1.0, 1.0,
+                 0.0, 1.0*/
+            ];
+        //}
 
 
         gl.bindBuffer(gl.ARRAY_BUFFER, this.textureCoordBuffer);

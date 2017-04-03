@@ -19,11 +19,10 @@ function degToRad(degrees) {
 }
 
 document.fullscreenEnabled = document.fullscreenEnabled || document.mozFullScreenEnabled || document.documentElement.webkitRequestFullScreen;
-let isFullScreen = false;
 function toggleFullscreen(element, glContext, normalDimension) {
 
-    if (!isFullScreen) {
-
+    if (!document.fullscreenElement &&    // alternative standard method
+        !document.mozFullScreenElement && !document.webkitFullscreenElement) {
         if (element.requestFullscreen) {
             element.requestFullscreen();
         } else if (element.mozRequestFullScreen) {
@@ -37,7 +36,6 @@ function toggleFullscreen(element, glContext, normalDimension) {
         glContext.viewportWidth = element.width = window.innerWidth;
         glContext.viewportHeight = element.height = window.innerHeight;
 
-        isFullScreen = true;
     }
     else {
         if (document.exitFullscreen) {
@@ -51,6 +49,5 @@ function toggleFullscreen(element, glContext, normalDimension) {
         glContext.viewportWidth = element.width = normalDimension.w;
         glContext.viewportHeight = element.height = normalDimension.h;
 
-        isFullScreen = false;
     }
 }
