@@ -119,6 +119,7 @@ function renderSquares() {
 
         mat4.identity(mvMatrix);
         mat4.translate(mvMatrix, mvMatrix, vec3.fromValues(square.x, square.y, square.z));
+        mat4.multiply(mvMatrix, mvMatrix, sceneRotationMatrix);
 
 
         gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexPositionBuffer);
@@ -186,6 +187,9 @@ function initKeyboard() {
             case " " :
                 isAnimated = !isAnimated;
                 break;
+            case "Enter" :
+                mat4.identity(sceneRotationMatrix);
+                break;
             case "w" :
                 renderingModes = gl.LINES;
                 break;
@@ -215,17 +219,59 @@ function initKeyboard() {
     }, true);
 }
 
+let mouseDown = false;
+let lastMouseX = null;
+let lastMouseY = null;
+let sceneRotationMatrix = mat4.create();
+function handleMouseDown(event) {
+    mouseDown = true;
+    lastMouseX = event.clientX;
+    lastMouseY = event.clientY;
+}
+
+function handleMouseUp(event) {
+    mouseDown = false;
+}
+
+function handleMouseMove(event) {
+    if (!mouseDown) {
+        return;
+    }
+    let newX = event.clientX;
+    let newY = event.clientY;
+
+    let deltaX = newX - lastMouseX;
+    let newRotationMatrix = mat4.create();
+    mat4.identity(newRotationMatrix);
+    mat4.rotate(newRotationMatrix, newRotationMatrix, degToRad(deltaX / 10), vec3.fromValues(0, 1, 0));
+
+    let deltaY = newY - lastMouseY;
+    mat4.rotate(newRotationMatrix, newRotationMatrix, degToRad(deltaY / 10), vec3.fromValues(1, 0, 0));
+
+    mat4.multiply(sceneRotationMatrix, newRotationMatrix, sceneRotationMatrix);
+
+    lastMouseX = newX;
+    lastMouseY = newY;
+}
+
+function initMouse() {
+    canvas.onmousedown = handleMouseDown;
+    document.onmouseup = handleMouseUp;
+    document.onmousemove = handleMouseMove;
+}
+
 /**
  * Entry point for our application
  */
 function main() {
     const canvas = document.getElementById("scene");
 
-    initKeyboard();
-
     initGL(canvas);
     initShaders();
     renderingModes = gl.TRIANGLE_STRIP;
+
+    initKeyboard();
+    initMouse();
 
     initTexture();
     initSquares();
